@@ -19,17 +19,18 @@ class XCUITest101UITests: XCTestCase {
     override func tearDown() {
         super.tearDown()
     }
-    
-    func testRecorded() {
-        let app = XCUIApplication()
-        app.otherElements.containing(.image, identifier:"wall1").element.tap()
-        app.buttons["enter"].tap()
-        app.staticTexts["Welcome to XCUITest"].tap()
+    func takeScreenshot(name: String) {
+        let fullScreenshot = XCUIScreen.main.screenshot()
+
+        let screenshot = XCTAttachment(uniformTypeIdentifier: "public.png", name: "Screenshot-\(name)-\(UIDevice.current.name).png", payload: fullScreenshot.pngRepresentation, userInfo: nil)
+        screenshot.lifetime = .keepAlways
+        add(screenshot)
     }
     
     func testRefactored() {
         let app = XCUIApplication()
         app.buttons["enter"].tap()
+        takeScreenshot(name: "test")
         XCTAssert(app.staticTexts["Welcome to XCUITest"].exists)
     }
     
